@@ -1,5 +1,5 @@
 const App = require('express')()
-const AppRouter = require('./AppRouter')
+const AppRouter = require('./routes/AppRouter')
 
 const PORT = 3001
 

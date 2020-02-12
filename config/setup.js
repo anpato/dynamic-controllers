@@ -6,10 +6,9 @@ const setup = () => {
     __dirname + '/./Controllers.json',
     'utf-8'
   )
-  const controllers = JSON.parse(controllersFile).map(controller => {
-    let fileName = controller.split(' ')[1].split('()')[0]
-    return require(`../controllers/${fileName}`)
-  })
+  const controllers = JSON.parse(controllersFile).map(controller =>
+    require(`../controllers/${controller.trim()}`)
+  )
 
   const AppController = new ApplicationController(controllers)
   AppController.initializeControllers()
@@ -20,4 +19,4 @@ const setup = () => {
   }
 }
 
-module.exports = setup
+module.exports = { ...setup() }

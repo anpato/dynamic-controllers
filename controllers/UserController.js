@@ -9,6 +9,7 @@ module.exports = class UserController {
       { httpMethod: 'post', url: '/' }
     ]
   }
+
   async get_Users(req, res) {
     res.json({ Message: 'Get Users' })
   }

@@ -10,6 +10,7 @@ module.exports = class PostController {
       { httpMethod: 'post', url: '/' }
     ]
   }
+
   async get_posts(req, res) {
     res.json({ Message: 'Get posts' })
   }
