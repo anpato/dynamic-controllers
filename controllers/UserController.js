@@ -6,10 +6,14 @@ module.exports = class UserController {
     this.paths = [
       { httpMethod: 'get', url: '/' },
       { httpMethod: 'get', url: '/:id' },
-      { httpMethod: 'post', url: '/' }
+      { httpMethod: 'post', url: '/' },
+      { httpMethod: 'PUT', url: '/:ID' }
     ]
   }
 
+  //  TODO: Find a way to assign specific functions to path in contructor
+
+  // ! Methods have to remain in specific order to match the order in this.paths
   async get_Users(req, res) {
     res.json({ Message: 'Get Users' })
   }
@@ -20,5 +24,9 @@ module.exports = class UserController {
 
   async create_users(req, res) {
     res.json({ Message: 'Create Users' })
+  }
+
+  async update_user(req, res) {
+    res.json({ Message: `Update User by id ${req.params.id}` })
   }
 }

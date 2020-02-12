@@ -12,7 +12,7 @@ module.exports = class ApplicationController {
   setupBaseRoutes() {
     return this.controllers.map(controller => {
       return {
-        path: controller.basePath,
+        path: controller.basePath.toLowerCase(),
         router: controller.router
       }
     })
@@ -23,7 +23,7 @@ module.exports = class ApplicationController {
       name: controller,
       options: this.configurePaths(
         controller.paths,
-        this.setupMethods(
+        this.filterMethods(
           Object.getOwnPropertyNames(controller.constructor.prototype)
         )
       ),
@@ -36,8 +36,8 @@ module.exports = class ApplicationController {
     controllers.forEach(controller => {
       const { options } = controller
       return options.map(option => {
-        controller.router[option.httpMethod](
-          option.url,
+        controller.router[option.httpMethod.toLowerCase()](
+          option.url.toLowerCase(),
           controller.name[option.method]
         )
       })
@@ -51,7 +51,7 @@ module.exports = class ApplicationController {
     }))
   }
 
-  setupMethods(methods) {
+  filterMethods(methods) {
     return methods.filter(method => method !== 'constructor')
   }
 }
