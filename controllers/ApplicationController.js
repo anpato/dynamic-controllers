@@ -5,11 +5,17 @@ module.exports = class ApplicationController {
     this.controllers = Controllers
   }
 
+  initializeControllers() {
+    this.controllers = this.controllers.map(controller => new controller())
+  }
+
   setupBaseRoutes() {
-    return this.controllers.map(controller => ({
-      path: controller.basePath,
-      router: controller.router
-    }))
+    return this.controllers.map(controller => {
+      return {
+        path: controller.basePath,
+        router: controller.router
+      }
+    })
   }
 
   setupControllerRoutes() {

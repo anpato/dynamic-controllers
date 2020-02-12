@@ -1,11 +1,10 @@
 const AppRouter = require('express').Router()
-const {
-  BaseRouterProps,
-  ControllerRouterProps
-} = require('./config/RouterCreator')
+const setup = require('./config/RouterCreator')
 
-ControllerRouterProps()
+setup().ControllerRouterProps
 
-BaseRouterProps().forEach(route => AppRouter.use(route.path, route.router))
+setup().BaseRouterProps.forEach(route =>
+  AppRouter.use(route.path, route.router)
+)
 
 module.exports = AppRouter
