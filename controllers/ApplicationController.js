@@ -1,57 +1,55 @@
 module.exports = class ApplicationController {
-  constructor(Controllers) {
-    this.basePaths = []
-    this.basePath = '/api'
-    this.controllers = Controllers
-  }
+	constructor(Controllers) {
+		this.basePaths = []
+		this.basePath = '/api'
+		this.controllers = Controllers
+	}
 
-  initializeControllers() {
-    this.controllers = this.controllers.map(controller => new controller())
-  }
+	initializeControllers() {
+		this.controllers = this.controllers.map(Controller => new Controller())
+	}
 
-  setupBaseRoutes() {
-    return this.controllers.map(controller => {
-      return {
-        path: controller.basePath.toLowerCase(),
-        router: controller.router
-      }
-    })
-  }
+	setupBaseRoutes() {
+		return this.controllers.map(controller => ({
+			path: controller.basePath.toLowerCase(),
+			router: controller.router
+		}))
+	}
 
-  setupControllerRoutes() {
-    return this.controllers.map(controller => ({
-      name: controller,
-      options: this.configurePaths(
-        controller.paths,
-        this.filterMethods(
-          Object.getOwnPropertyNames(controller.constructor.prototype)
-        )
-      ),
-      router: controller.router
-    }))
-  }
+	setupControllerRoutes() {
+		return this.controllers.map(controller => ({
+			name: controller,
+			options: this.configurePaths(
+				controller.paths,
+				this.filterMethods(
+					Object.getOwnPropertyNames(controller.constructor.prototype)
+				)
+			),
+			router: controller.router
+		}))
+	}
 
-  initializeRouters() {
-    const controllers = this.setupControllerRoutes()
-    controllers.forEach(controller => {
-      const { options } = controller
-      return options.map(option => {
-        controller.router[option.httpMethod.toLowerCase()](
-          option.url.toLowerCase(),
-          controller.name[option.method]
-        )
-      })
-    })
-  }
+	initializeRouters() {
+		const controllers = this.setupControllerRoutes()
+		controllers.forEach(controller => {
+			const { options } = controller
+			return options.map(option => {
+				return controller.router[option.httpMethod.toLowerCase()](
+					option.url.toLowerCase(),
+					controller.name[option.method]
+				)
+			})
+		})
+	}
 
-  configurePaths(pathsConfig, methods) {
-    return pathsConfig.map((config, index) => ({
-      ...config,
-      method: methods[index]
-    }))
-  }
+	configurePaths(pathsConfig, methods) {
+		return pathsConfig.map((config, index) => ({
+			...config,
+			method: methods[index]
+		}))
+	}
 
-  filterMethods(methods) {
-    return methods.filter(method => method !== 'constructor')
-  }
+	filterMethods(methods) {
+		return methods.filter(method => method !== 'constructor')
+	}
 }
